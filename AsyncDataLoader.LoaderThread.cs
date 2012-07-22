@@ -2,7 +2,11 @@ namespace AsyncDataLoader
 {
     using System;
     using System.Collections.Concurrent;
+#if NETFX_CORE
+    using Thread = System.Threading.Tasks.Task;
+#else
     using System.Threading;
+#endif
 
     public partial class AsyncDataLoader<T, THolder> 
     {

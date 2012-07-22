@@ -3,7 +3,11 @@ namespace AsyncDataLoader
     using System;
     using System.Drawing;
 
+#if NETFX_CORE
+    using Windows.UI.Xaml.Shapes;
+#else
     using Android.Drawing;
+#endif
 
     public interface IAsyncDataLoader
     {

@@ -3,10 +3,16 @@ namespace AsyncDataLoader
     using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
-    using System.Drawing;
     using System.Linq;
+#if NETFX_CORE
+    using System.Drawing;
+    using Windows.System.Threading;
+    using Windows.UI.Xaml.Shapes;
+#else
+    using System.Drawing;
     using System.Threading;
     using Android.Drawing;
+#endif
 
     /// <summary>
     ///   Asynchronous data loader that allows for loading of any daya type on another thread while storing
@@ -94,7 +100,11 @@ namespace AsyncDataLoader
         public void RequestLoadForItem(int index)
         {
             // enqueue the loader using another thread as it may lock the ui
+#if NETFX_CORE
+            ThreadPool.RunAsync(delegate { this.EnqueueLoadData(index); });
+#else
             ThreadPool.QueueUserWorkItem(delegate { this.EnqueueLoadData(index); });
+#endif
         }
 
         private void EnqueueLoadData(int index)
